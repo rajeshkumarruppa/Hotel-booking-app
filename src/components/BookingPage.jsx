@@ -19,24 +19,25 @@ import {
 const BookingPage = () => {
   const dispatch = useDispatch();
   const bookingData = useSelector((state) => state.booking.data);
-  const Data=useSelector((state) => state.booking)
+  const Data = useSelector((state) => state.booking);
   console.log(bookingData);
   const isOrderComplete = useSelector((state) => state.booking.isOrderComplete);
-  
 
-    const date1 = new Date(bookingData.checkIn); // First date
-    const date2 = new Date(bookingData.checkOut); // Second date
+  const date1 = new Date(bookingData.checkIn); // First date
+  const date2 = new Date(bookingData.checkOut); // Second date
 
-    // Calculate the difference in milliseconds
-    const differenceInMs = date2 - date1;
+  // Calculate the difference in milliseconds
+  const differenceInMs = date2 - date1;
 
-    // Convert milliseconds to days
-    const differenceInDays = differenceInMs / (1000 * 60 * 60 * 24);
+  // Convert milliseconds to days
+  const differenceInDays = differenceInMs / (1000 * 60 * 60 * 24);
 
-console.log(`Difference in days: ${differenceInDays}`);
-const totalPriceOfBooking = Number(differenceInDays*Data.roomPrice)
-console.log(totalPriceOfBooking);
-console.log(typeof(differenceInDays))
+  console.log(`Difference in days: ${differenceInDays}`);
+  const totalPriceOfBooking = Number(
+    differenceInDays * (Data.roomPrice * bookingData.rooms)
+  );
+  console.log(totalPriceOfBooking);
+  console.log(typeof differenceInDays);
   const handlePayment = () => {
     dispatch(completeOrder());
   };
@@ -167,9 +168,8 @@ console.log(typeof(differenceInDays))
             <input
               value={bookingData.checkOut}
               type="date"
-              onChange={(e) => {dispatch(setCheckOut(e.target.value))
-                
-                
+              onChange={(e) => {
+                dispatch(setCheckOut(e.target.value));
               }}
               className="border rounded-md p-2 w-full"
             />
@@ -179,8 +179,9 @@ console.log(typeof(differenceInDays))
             <div className="flex space-x-2">
               <button
                 className="border rounded-md p-2 w-8"
-                onClick={() => {dispatch(decrementRooms())
-                    
+                onClick={() => {
+                  dispatch(decrementRooms());
+                  dispatch(updateTotalPrice(totalPriceOfBooking));
                 }}
                 value={bookingData.rooms}
               >
@@ -189,7 +190,11 @@ console.log(typeof(differenceInDays))
               <span className="p-2">{bookingData.rooms}</span>
               <button
                 className="border rounded-md p-2 w-8"
-                onClick={() => dispatch(incrementRooms())}
+                onClick={() => {
+                  dispatch(incrementRooms());
+                  dispatch(updateTotalPrice(totalPriceOfBooking));
+                  dispatch(updateNoOfDays(differenceInDays));
+                }}
               >
                 +
               </button>

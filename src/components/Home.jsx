@@ -52,9 +52,8 @@ const Home = () => {
               CHECK-IN
             </label>
             <input
-              onClick={(e) => {
+              onChange={(e) => {
                 dispatch(setCheckIn(e.target.value));
-                console.log(e.target.value);
               }}
               type="date"
               className="border p-2 w-full rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -67,9 +66,8 @@ const Home = () => {
               CHECK-OUT
             </label>
             <input
-              onClick={(e) => {
+              onChange={(e) => {
                 dispatch(setCheckOut(e.target.value));
-                console.log(e.target.value);
               }}
               type="date"
               className="border p-2 w-full rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
